@@ -30,8 +30,9 @@ class NewsSpider(scrapy.Spider):
     def parse(self,response):
         json_data = str(json.loads(response.text)['articleList'])
         json_format = json.loads(json_data)
-        next_page = response.urljoin(json_format[0]['url'])
-        yield scrapy.Request(next_page, callback=self.get_data)
+        for i in range(len(json_format)):
+            next_page = response.urljoin(json_format[i]['url'])
+            yield scrapy.Request(next_page, callback=self.get_data)
                 
     def get_data(self,response): 
         headline = response.css('div.story-header h1.story-headline::text').get()
@@ -44,16 +45,4 @@ class NewsSpider(scrapy.Spider):
                 '\n} '
                 
                 )
-                
-                
-        
-
-       
-
-       
-
-    
-        
             
-
-    
